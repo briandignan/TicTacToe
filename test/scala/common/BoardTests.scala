@@ -5,8 +5,6 @@ import org.scalatest.FunSuite
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 
-@RunWith(classOf[JUnitRunner])
-class BoardTests extends FunSuite {
   trait BoardData {
     def strToBoard( str: String ): Board = {
       val lines = str.split("\n")
@@ -93,7 +91,61 @@ class BoardTests extends FunSuite {
         " yy\n" +
         "y x")
         
+    val gameBothOneTurnFromWinning = strToBoard(
+        "x x\n" +
+        " yy\n" +
+        "y x")
+        
+    val gameBothCantWin = strToBoard(
+        "xyx\n" +
+        "xxy\n" +
+        "y x")
+        
+        
+    val gameOneMoveSixAltOne = strToBoard(
+        "xxx\n" +
+        " yy\n" +
+        "y x")
+    val gameOneMoveSixAltTwo = strToBoard(
+        "x x\n" +
+        "xyy\n" +
+        "y x")
+    val gameOneMoveSixAltThree = strToBoard(
+        "x x\n" +
+        " yy\n" +
+        "yxx")
+        
+        
+        
+    val gameOneMoveSevenExpectedX = strToBoard(
+        "xxx\n" +
+        "xyy\n" +
+        "y x")
+    val gameOneMoveSevenExpectedY = strToBoard(
+        "xyx\n" +
+        "xyy\n" +
+        "y x")
+    val gameOneMoveFiveExpectedX = strToBoard(
+        "x x\n" +
+        " y \n" +
+        "y x")
+    val gameOneMoveFiveExpectedY = strToBoard(
+        "x y\n" +
+        " y \n" +
+        "y x")
+        
+        
+    val gameOneMoveFourExpectedY = strToBoard(
+        "x  \n" +
+        " y \n" +
+        "  x")
+        
   }
+
+
+@RunWith(classOf[JUnitRunner])
+class BoardTests extends FunSuite {
+
   
   
   test("winner of game various scenarios") {
@@ -147,6 +199,20 @@ class BoardTests extends FunSuite {
   test("toCompactString") {
     new BoardData {
       assert( "xyx\nyxy\nyxy" === gameOverNoWinner.toCompactString )
+    }
+  }
+  
+  
+  test("Attempt to place more than two different marks on a board") {
+    new BoardData {
+      
+      // Confirm that an 'x' can be placed at c3 without exception
+      gameOneMoveTwo.makeMove(new Coordinate('c','3'), 'x')
+      intercept[IllegalArgumentException] {
+        // Confirm that placing a 'z' at c3 (on the same original board) produces an exception
+        gameOneMoveTwo.makeMove(new Coordinate('c','3'), 'z')
+      }
+      
     }
   }
   

@@ -1,12 +1,11 @@
 package common
 
-class Coordinate( rowChar: Char, colChar: Char ) {
-  if ( rowChar.toLower < 97 || colChar < 48 ) {
+class Coordinate( val row: Int, val col: Int ) {
+  if ( row < 0 || col < 0 ) {
     throw new IllegalArgumentException("Row and Column must positive")
   }
   
-  val row = rowChar - 97
-  val col = colChar - 49
+  def this( rowChar: Char, colChar: Char ) = this( rowChar.toLower - 97, colChar - 49 )
   
   override def toString(): String = "(" + row + " / " + col + ")"
 }

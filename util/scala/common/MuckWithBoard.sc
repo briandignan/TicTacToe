@@ -12,7 +12,8 @@ object MuckWithBoard {
                                                   //| c|   |   |   |
                                                   //|  |---|---|---|
                                                   //| 
-  val t1 = emptyBoard.makeMove(0, 0, 'x')         //> t1  : common.Board = 
+  val t1 = emptyBoard.makeMove(new Coordinate(0, 0), 'x')
+                                                  //> t1  : common.Board = 
                                                   //|    1   2   3  
                                                   //|  -------------
                                                   //| a| x |   |   |
@@ -22,7 +23,7 @@ object MuckWithBoard {
                                                   //| c|   |   |   |
                                                   //|  |---|---|---|
                                                   //| 
-  val t2 = t1.makeMove(1, 0, 'y')                 //> t2  : common.Board = 
+  val t2 = t1.makeMove(new Coordinate(1, 0), 'y') //> t2  : common.Board = 
                                                   //|    1   2   3  
                                                   //|  -------------
                                                   //| a| x |   |   |

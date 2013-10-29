@@ -2,7 +2,7 @@ package common
 
 import scala.annotation.tailrec
 
-class Board( rows: Vector[Vector[Char]] ) {
+class Board( val rows: Vector[Vector[Char]] ) {
   if ( rows.length != 3 || rows(0).length != 3 || rows(1).length != 3 || rows(2).length != 3 ) {
     throw new IllegalArgumentException("Invalid contents vector shape")
   }
@@ -22,9 +22,22 @@ class Board( rows: Vector[Vector[Char]] ) {
       throw new IllegalStateException("Unable to make a move because the game is already over")
     }
     
+    if ( uniqueMarks.+(mark).size > 2 ) {
+      throw new IllegalArgumentException("Unable to place '" + mark + "' on board as there are already two other unique marks on the board." )
+    }
+    
     new Board(rows.updated( row, rows(row).updated(col, mark)))
     
   }
+  
+  
+  /**
+   * Return the set of all unique marks, not including the ' ' space char
+   */
+  def uniqueMarks: Set[Char] = 
+    rows.foldLeft(Set[Char]())((acc: Set[Char], row: Vector[Char]) => 
+      row.foldLeft(acc)((acc: Set[Char], c: Char) => 
+        if (c == ' ') acc else acc.+(c) ))
   
   
   def gameIsOver(): Boolean = {
@@ -32,7 +45,7 @@ class Board( rows: Vector[Vector[Char]] ) {
     ( winnerOfGame != None || unmarkedSquares == 0 )
   }
   
-  private def unmarkedSquares(): Int = {
+  def unmarkedSquares(): Int = {
     // Sum the quantity of squares that are empty (contain a space character) in every row
     rows.foldLeft(0)((acc: Int, row: Vector[Char]) => 
       row.foldLeft(acc)((acc: Int, c: Char) => 
@@ -116,6 +129,12 @@ class Board( rows: Vector[Vector[Char]] ) {
   private def rowToString( row: Char ): String = {
     val rowNum = row - 97
     row +"| %c | %c | %c |\n".format( rows(rowNum)(0), rows(rowNum)(1), rows(rowNum)(2) )
+  }
+  
+  
+  override def equals( other: Any): Boolean = other match {
+    case other: Board => other.rows == this.rows && other.getClass() == this.getClass() 
+    case _ => false
   }
   
   

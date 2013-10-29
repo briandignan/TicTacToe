@@ -26,6 +26,10 @@ class ConsoleServer( board: Board, playerOne: Player, playerTwo: Player ) {
         // The game is not over. Play the next turn
         println( board.toString )
         val updatedBoard = player.makeMove( board )
+        if ( updatedBoard.unmarkedSquares != (board.unmarkedSquares - 1) ) {
+          throw new IllegalStateException("Player attempted to make multiple moves in the same turn.")
+        }
+        
         val nextPlayer = if ( player == playerOne ) playerTwo else playerOne
         playUntilOver( updatedBoard, nextPlayer )
         
